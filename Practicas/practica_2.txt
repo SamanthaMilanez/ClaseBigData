@@ -30,3 +30,150 @@ Var: declara un valor variable, su valor puede cambiar durante la ejecucion del 
 4. Acceso a Estructuras de Datos (Tuplas)
 
 Indexación de Tuplas: Dada la tupla heterogénea (2, 4, 5, 1, 2, 3, 3.1416, 23), aplique el método de acceso correspondiente para recuperar el valor de punto flotante $3.1416$.
+
+
+Terminal_Evidencia
+
+scala> object FuncionesMatematicas {
+     | 
+     |   def calcularRadio(area: Double): Double = {
+     |     math.sqrt(area / math.Pi)
+     |   }
+     | 
+     | }
+object FuncionesMatematicas
+
+scala> val area = 78.5
+val area: Double = 78.5
+
+scala> val radio = FuncionesMatematicas.calcularRadio(area)
+val radio: Double = 4.998732445873411
+
+scala> println(s"El radio del círculo es: $radio")
+El radio del círculo es: 4.998732445873411
+
+scala> val area = 280
+val area: Int = 280
+
+scala> val radio = FuncionesMatematicas.calcularRadio(area)
+val radio: Double = 9.440697438826296
+
+scala> println(s"El radio del círculo es: $radio")
+El radio del círculo es: 9.440697438826296
+
+scala> val area = 1986
+val area: Int = 1986
+
+scala> val radio = FuncionesMatematicas.calcularRadio(area)
+val radio: Double = 25.142860496789307
+
+scala> println(s"El radio del círculo es: $radio")
+El radio del círculo es: 25.142860496789307
+
+scala> def esPar(n: Int): Boolean = {
+     |   n % 2 == 0
+     | }
+def esPar(n: Int): Boolean
+
+scala> println(esPar(4))
+true
+
+scala> println(esPar(7))
+false
+
+scala> println(esPar(15))
+false
+
+scala> println(esPar(16))
+true
+
+scala> println(esPar(79))
+false
+
+scala> println(esPar(88))
+true
+
+scala> val bird = "tweet"
+val bird: String = tweet
+
+scala> val mensaje = s"Estoy escribiendo un $bird"
+val mensaje: String = Estoy escribiendo un tweet
+
+scala> println(mensaje)
+Estoy escribiendo un tweet
+
+scala> val mensaje = "Hola Luke yo soy tu padre!"
+val mensaje: String = Hola Luke yo soy tu padre!
+
+scala> val nombre = mensaje.slice(5, 9)
+val nombre: String = Luke
+
+scala> println(nombre)
+Luke
+
+scala> val nombre = mensaje.slice(19,24)
+val nombre: String = " padr"
+
+scala> val nombre = mensaje.slice(19,25)
+val nombre: String = " padre"
+
+scala> println(nombre)
+ padre
+
+scala> val numero=10
+val numero: Int = 10
+
+scala> val numero=24
+val numero: Int = 24
+
+scala> val numero=10
+val numero: Int = 10
+
+scala> numero=12
+             ^
+       error: reassignment to val
+
+scala> numero=24
+             ^
+       error: reassignment to val
+
+scala> var contador=10
+var contador: Int = 10
+
+scala> contador=20
+// mutated contador
+
+scala> contador=20
+// mutated contador
+
+scala> println(contador)
+
+scala> contador=20
+// mutated contador
+scala> contador=20
+// mutated contador
+// mutated contador
+
+scala> println(contador)
+20
+
+scala> contador=45
+// mutated contador
+
+scala> println(contador)
+45
+
+scala> val datos = (2, 4, 5, 1, 2, 3, 3.1416, 23)
+val datos: (Int, Int, Int, Int, Int, Int, Double, Int) = (2,4,5,1,2,3,3.1416,23)
+
+scala> val valorPi = datos._7
+val valorPi: Double = 3.1416
+
+scala> println(calorPi)
+               ^
+       error: not found: value calorPi
+
+scala> println(valorPi)
+3.1416
+
+scala>
