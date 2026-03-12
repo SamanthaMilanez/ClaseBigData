@@ -1,0 +1,32 @@
+Practica 2 Scala
+1. Implementacion de funciones matematicas
+
+Calculo del radio 
+def calcularRadio(area: Double): Double = {
+  math.sqrt(area / math.Pi)
+}
+
+Evaluacion de paridad
+def esPar(n: Int): Boolean = {
+  n % 2 == 0
+}
+
+2. Manipulacion de strings e interpolacion
+
+Interpolacion de literales
+val bird = "tweet"
+val mensaje = s"Estoy escribiendo un $bird"
+
+Extraccion de subcadenas
+val mensaje2 = "Hola Luke yo soy tu padre!"
+val nombre = mensaje2.slice(5,9)
+
+3. Teoria y tipos y mutabilidad 
+
+Hay dos formas de declarar variables
+Val: declara un valor inmutable, una ves asignado el valor no puede modificarse.
+Var: declara un valor variable, su valor puede cambiar durante la ejecucion del programa
+
+4. Acceso a Estructuras de Datos (Tuplas)
+
+Indexación de Tuplas: Dada la tupla heterogénea (2, 4, 5, 1, 2, 3, 3.1416, 23), aplique el método de acceso correspondiente para recuperar el valor de punto flotante $3.1416$.
