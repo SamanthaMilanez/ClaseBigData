@@ -1652,3 +1652,67 @@ java.nio.file.FileSystemNotFoundException: Provider "output" not installed
 2026.03.12 11:13:00 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.
 2026.03.12 11:13:00 INFO  no build target found for C:\Users\Samantha\Documents\projects\ClaseBigData\Practicas\practica_3.scala. Using presentation compiler with project's scala-library version: 3.3.7
 2026.03.12 11:13:01 INFO  no build target found for C:\Users\Samantha\Documents\projects\ClaseBigData\Practicas\practica_3.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.03.12 11:13:01 INFO  no build target found for C:\Users\Samantha\Documents\projects\ClaseBigData\Practicas\practica_3.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.03.12 11:13:01 INFO  no build target found for C:\Users\Samantha\Documents\projects\ClaseBigData\Practicas\practica_3.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.03.12 11:13:01 INFO  no build target found for C:\Users\Samantha\Documents\projects\ClaseBigData\Practicas\practica_3.scala. Using presentation compiler with project's scala-library version: 3.3.7
+Mar 12, 2026 11:13:01 AM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 6
+2026.03.12 11:13:01 INFO  no build target found for C:\Users\Samantha\Documents\projects\ClaseBigData\Practicas\practica_3.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.03.12 11:13:03 INFO  Running List(C:\Users\Samantha\AppData\Local\Coursier\data\bin\scala-cli.BAT, setup-ide, C:\Users\Samantha\Documents\projects\ClaseBigData)
+2026.03.12 11:13:03 INFO  Attempting to connect to the build server...
+2026.03.12 11:13:03 INFO  Running BSP server List(C:\Users\Samantha\AppData\Local\Coursier\data\bin\.scala-cli.aux.exe, bsp, --json-options, C:\Users\Samantha\Documents\projects\ClaseBigData\.scala-build\ide-options-v2.json, --json-launcher-options, C:\Users\Samantha\Documents\projects\ClaseBigData\.scala-build\ide-launcher-options.json, --envs-file, C:\Users\Samantha\Documents\projects\ClaseBigData\.scala-build\ide-envs.json, C:\Users\Samantha\Documents\projects\ClaseBigData)
+2026.03.12 11:13:03 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at C:\Users\Samantha\Documents\projects\ClaseBigData\.metals\bsp.trace.json or C:\Users\Samantha\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2026.03.12 11:13:05 INFO  time: Connected to build server in 1.7s
+2026.03.12 11:13:05 INFO  Connected to Build server: scala-cli v1.12.4
+2026.03.12 11:13:06 INFO  compiling clasebigdata_d5c0a6989e (2 scala sources)
+2026.03.12 11:13:06 INFO  time: compiled ClaseBigData_d5c0a6989e in 0.83s
+2026.03.12 11:13:07 INFO  compiling clasebigdata_d5c0a6989e (2 scala sources)
+2026.03.12 11:13:07 INFO  time: compiled ClaseBigData_d5c0a6989e in 0.52s
+2026.03.12 11:13:13 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.
+2026.03.12 11:13:13 INFO  time: indexed workspace in 8.18s
+2026.03.12 11:13:14 INFO  compiling clasebigdata_d5c0a6989e (2 scala sources)
+2026.03.12 11:13:14 INFO  time: compiled ClaseBigData_d5c0a6989e in 0.92s
+2026.03.12 11:20:08 INFO  compiling clasebigdata_d5c0a6989e (2 scala sources)
+2026.03.12 11:20:08 INFO  time: compiled ClaseBigData_d5c0a6989e in 0.38s
+2026.03.12 11:21:53 INFO  compiling clasebigdata_d5c0a6989e (2 scala sources)
+2026.03.12 11:21:53 INFO  time: compiled ClaseBigData_d5c0a6989e in 0.29s
+2026.03.12 11:23:05 INFO  compiling clasebigdata_d5c0a6989e (2 scala sources)
+2026.03.12 11:23:05 INFO  time: compiled ClaseBigData_d5c0a6989e in 0.29s
+2026.03.12 11:25:01 INFO  compiling clasebigdata_d5c0a6989e (2 scala sources)
+2026.03.12 11:25:01 INFO  time: compiled ClaseBigData_d5c0a6989e in 0.31s
+2026.03.12 11:26:02 INFO  compiling clasebigdata_d5c0a6989e (2 scala sources)
+2026.03.12 11:26:02 INFO  time: compiled ClaseBigData_d5c0a6989e in 0.3s
+Exception in thread "pool-6-thread-1" java.lang.InterruptedException
+	at scala.meta.internal.metals.FutureCancelToken.checkCanceled(FutureCancelToken.scala:29)
+	at scala.meta.internal.pc.CompilerAccess.onCompilerJobQueue$$anonfun$1(CompilerAccess.scala:208)
+	at scala.meta.internal.pc.CompilerJobQueue$Job.run(CompilerJobQueue.scala:153)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2026.03.12 11:28:35 INFO  compiling clasebigdata_d5c0a6989e (2 scala sources)
+2026.03.12 11:28:35 INFO  time: compiled ClaseBigData_d5c0a6989e in 0.35s
+2026.03.12 11:29:18 INFO  compiling clasebigdata_d5c0a6989e (2 scala sources)
+2026.03.12 11:29:18 INFO  time: compiled ClaseBigData_d5c0a6989e in 0.26s
+2026.03.12 11:30:03 INFO  compiling clasebigdata_d5c0a6989e (2 scala sources)
+2026.03.12 11:30:03 INFO  time: compiled ClaseBigData_d5c0a6989e in 0.27s
+2026.03.12 11:37:49 INFO  compiling clasebigdata_d5c0a6989e (2 scala sources)
+2026.03.12 11:37:49 INFO  time: compiled ClaseBigData_d5c0a6989e in 0.24s
+Exception in thread "pool-6-thread-2" java.lang.InterruptedException
+	at scala.meta.internal.metals.FutureCancelToken.checkCanceled(FutureCancelToken.scala:29)
+	at scala.meta.internal.pc.CompilerAccess.onCompilerJobQueue$$anonfun$1(CompilerAccess.scala:208)
+	at scala.meta.internal.pc.CompilerJobQueue$Job.run(CompilerJobQueue.scala:153)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2026.03.12 11:40:25 INFO  compiling clasebigdata_d5c0a6989e (2 scala sources)
+2026.03.12 11:40:25 INFO  time: compiled ClaseBigData_d5c0a6989e in 0.28s
+2026.03.12 11:42:46 INFO  compiling clasebigdata_d5c0a6989e (2 scala sources)
+2026.03.12 11:42:46 INFO  time: compiled ClaseBigData_d5c0a6989e in 0.41s
+2026.03.12 11:47:48 INFO  compiling clasebigdata_d5c0a6989e (2 scala sources)
+2026.03.12 11:47:48 INFO  time: compiled ClaseBigData_d5c0a6989e in 0.27s
+2026.03.12 11:51:11 INFO  compiling clasebigdata_d5c0a6989e (2 scala sources)
+2026.03.12 11:51:11 INFO  time: compiled ClaseBigData_d5c0a6989e in 0.31s
+2026.03.12 11:53:01 INFO  compiling clasebigdata_d5c0a6989e (2 scala sources)
+2026.03.12 11:53:01 INFO  time: compiled ClaseBigData_d5c0a6989e in 0.34s
+Mar 12, 2026 11:55:23 AM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
