@@ -33,7 +33,9 @@ object Practica2 {
         val datos = (2,4,5,1,2,3,3.1416,23)
         println(datos._7)
 
-        // Ejemplo val vs var
+        // Ejemplo val vs var 
+        Val: declara un valor inmutable, una ves asignado el valor no puede modificarse.
+        Var: declara un valor variable, su valor puede cambiar durante la ejecucion del programa
 
         val numero = 10
         // numero = 20  // Esto daria error porque val es inmutable
