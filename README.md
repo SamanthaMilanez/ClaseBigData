@@ -1,11 +1,11 @@
 # Práctica 4
-
 # Descripción de la funcionalidad del código correspondiente a la Sesión 6
+
+```sh
 # En la línea 19 se define una función con el nombre listEvens, la cual recibirá una lista de enteros. 
 # Recorrerá cada elemento, mediante ciclo for, para verificar si el valor es par o impar. 
 # Utiliza el operador % para obtener residuo de dividir cada elemento entre 2
 # Imprime mensaje del resultado y al terminar el ciclo devuelve el String Done.
-```sh
 scala> def listEvens(list:List[Int]): String ={
      |     for(n <- list){(s"$n is even")
      |         if(n%2==0){(s"$n is even")
