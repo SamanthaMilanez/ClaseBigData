@@ -1,8 +1,11 @@
+# Práctica 3
+## Manipulación de Estructuras de Datos en Scala
 
-# Práctica 3 
-# Manipulación de Estructuras de Datos en Scala
-#En esta practica se utilizan colecciones, en cada renglon se explica que se esta haciendo. Se generan listas, se utiliza foreach para imprimir cada elemento del arreglo y se filtran resultados mediante slicing. Tambien se utilizan mapas mutables, se extrae la llave unica y se inserta un nuevo registro.
-```sh
+En esta práctica se utilizan colecciones. En cada renglón se explica qué se está haciendo. 
+Se generan listas, se utiliza foreach para imprimir cada elemento del arreglo y se filtran resultados mediante slicing. 
+También se utilizan mapas mutables, se extrae la llave única y se inserta un nuevo registro.
+
+```scala
 import scala.collection.mutable
 
 object Practica_3 {
@@ -81,14 +84,18 @@ object Practica_3 {
 
 }
 
+```
+
 # Práctica 4
-# Descripción de la funcionalidad del código correspondiente a la Sesión 6
+## Descripción de la funcionalidad del código correspondiente a la Sesión 6
+
+
+En la línea 19 se define una función con el nombre listEvens, la cual recibirá una lista de enteros. 
+Recorrerá cada elemento, mediante ciclo for, para verificar si el valor es par o impar. 
+Utiliza el operador % para obtener residuo de dividir cada elemento entre 2
+Imprime mensaje del resultado y al terminar el ciclo devuelve el String Done.
 
 ```sh
-# En la línea 19 se define una función con el nombre listEvens, la cual recibirá una lista de enteros. 
-# Recorrerá cada elemento, mediante ciclo for, para verificar si el valor es par o impar. 
-# Utiliza el operador % para obtener residuo de dividir cada elemento entre 2
-# Imprime mensaje del resultado y al terminar el ciclo devuelve el String Done.
 scala> def listEvens(list:List[Int]): String ={
      |     for(n <- list){(s"$n is even")
      |         if(n%2==0){(s"$n is even")
@@ -102,7 +109,7 @@ scala> def listEvens(list:List[Int]): String ={
 def listEvens(list: List[Int]): String
 
 #En las líneas 20 y 21, se declaran variables de tipo lista de números enteros.
-#La lista l con 8 elementos. La lista l2 con 6 elementos
+#La lista l con 8 elementos. La lista l2 con 6 elementos 
 scala> val l = List(1,2,3,4,5,6,7,8)
 val l: List[Int] = List(1, 2, 3, 4, 5, 6, 7, 8)
 
