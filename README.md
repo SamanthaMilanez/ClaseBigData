@@ -1,11 +1,11 @@
 # Práctica 2  
 ## Fundamentos de Scala: Funciones, Strings y Tipos de Datos
 
-En esta práctica se desarrollan conceptos básicos del lenguaje Scala, enfocados en la creación de funciones matemáticas, evaluación de condiciones lógicas, manipulación de cadenas de texto y uso de estructuras de datos como tuplas.
+En la siguiente práctica se desarrollan conceptos básicos del lenguaje Scala, enfocados en la creación de funciones matemáticas, evaluación de condiciones lógicas, manipulación de cadenas de texto y uso de estructuras de datos como tuplas.
 
-Se implementan funciones para resolver problemas específicos, como el cálculo del radio de un círculo a partir de su área y la verificación de si un número es par. Además, se trabaja con interpolación de strings y extracción de subcadenas.
+Tambien se implementaron funciones para resolver problemas específicos, como el cálculo del radio de un círculo a partir de su área y la verificación de si un número es par. Además, se trabaja con interpolación de strings y extracción de subcadenas.
 
-Finalmente, se analiza la diferencia entre variables inmutables (`val`) y mutables (`var`), lo cual es un concepto fundamental en la programación con Scala.
+Por ultimo, se analiza la diferencia entre variables inmutables (`val`) y mutables (`var`), lo cual es un concepto fundamental en la programación con Scala.
 
 ```scala
 object Practica2 {
