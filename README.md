@@ -57,6 +57,9 @@ object Practica2 {
   }
 
 }
+
+```
+
 # Práctica 3
 ## Manipulación de Estructuras de Datos en Scala
 
