@@ -411,4 +411,42 @@ scala> df2.show()
 +----------+-----------------+------------------+----------+-----------------+---------+------------------+--------------------+
 only showing top 20 rows
 #8. ¿Qué día tuvo el pico más alto en la columna “Open”?
-'''
+
+df.orderBy($"Open".desc).select("Date", "Open").show(1)
+
++----------+----------+
+|      Date|      Open|
++----------+----------+
+|2015-07-14|708.900017|
++----------+----------+
+only showing top 1 row
+
+#9. ¿Cuál es el significado de la columna Cerrar “Close” en el contexto de información financiera, explíquelo no hay que codificar nada?
+
+#La columna “Close” representa el precio de cierre de la acción al final de la jornada bursátil.
+
+#Es importante porque:
+
+#Refleja el último valor al que se negoció la acción ese día.
+#Se usa como referencia principal para análisis financiero.
+#Muchos indicadores técnicos se basan en este valor.
+#Permite comparar rendimiento entre días.
+
+#10. ¿Cuál es el máximo y mínimo de la columna “Volumen”?
+
+df.select(max("Volume"),min("Volume")).show()
+
++-----------+-----------+
+|max(Volume)|min(Volume)|
++-----------+-----------+
+|  315541800|    3531300|
++-----------+-----------+
+
+#11. Con Sintaxis Scala/Spark $ conteste lo siguiente:
+
+#a) ¿Cuántos días fue la columna “Close” inferior a $ 600?
+
+df.filter($"Close" < 600).count()
+val res13: Long = 1218
+
+
