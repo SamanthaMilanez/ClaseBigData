@@ -16,3 +16,4 @@ df.orderBy($"Open".desc).select("Date", "Open").show(1)
 //Muchos indicadores técnicos se basan en este valor.//
 //Permite comparar rendimiento entre días.//
 df.select(max("Volume"),min("Volume")).show()
+df.filter($"Close" < 600).count()
