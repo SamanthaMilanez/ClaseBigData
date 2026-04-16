@@ -368,7 +368,7 @@ root
 |2011-10-28| 80.280002|         84.660002| 79.599999|84.14000300000001| 57769600|             12.02|
 +----------+----------+------------------+----------+-----------------+---------+------------------+
 only showing top 5 rows
-#6 Usa el método describe() para aprender sobre el DataFrame.
+#6. Usa el método describe() para aprender sobre el DataFrame.
 scala> df.describe().show()
 26/04/15 19:56:38 WARN SparkStringUtils: Truncated the string representation of a plan since it was too large. This behavior can be adjusted by setting 'spark.sql.debug.maxToStringFields'.
 +-------+------------------+------------------+------------------+------------------+--------------------+------------------+
@@ -380,7 +380,7 @@ scala> df.describe().show()
 |    min|         53.990001|         55.480001|             52.81|              53.8|             3531300|          7.685714|
 |    max|        708.900017|        716.159996|        697.569984|        707.610001|           315541800|        130.929993|
 +-------+------------------+------------------+------------------+------------------+--------------------+------------------+
-#7Crea un nuevo Dataframe con una columna nueva llamada “HV Ratio” que es la relación que existe entre el precio de la columna “High” frente a la columna “Volumen” de acciones negociadas por un día. Hint - Es una operación
+#7. Crea un nuevo Dataframe con una columna nueva llamada “HV Ratio” que es la relación que existe entre el precio de la columna “High” frente a la columna “Volumen” de acciones negociadas por un día. Hint - Es una operación
 scala> val df2 = df.withColumn("HV Ratio",df("High")/df("Volume"))
 val df2: org.apache.spark.sql.DataFrame = [Date: date, Open: double ... 6 more fields]
 
@@ -410,5 +410,5 @@ scala> df2.show()
 |2011-11-18|             76.7|         78.999999| 76.039998|        78.059998| 34729100|         11.151428|2.274749388841058...|
 +----------+-----------------+------------------+----------+-----------------+---------+------------------+--------------------+
 only showing top 20 rows
-#8¿Qué día tuvo el pico más alto en la columna “Open”?
+#8. ¿Qué día tuvo el pico más alto en la columna “Open”?
 '''
