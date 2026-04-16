@@ -450,3 +450,61 @@ df.filter($"Close" < 600).count()
 val res13: Long = 1218
 
 
+
+# b) ¿Qué porcentaje del tiempo fue la columna “High” mayor que $ 500?
+
+scala> val highMayor: Double = df.filter($"High" > 500).count()
+val highMayor: Double = 62.0
+
+scala> val porcenT: Double = (highMayor / regs) * 100
+val porcenT: Double = 4.924543288324067
+
+
+# c) ¿Cuál es la correlación de Pearson entre columna “High” y la columna “Volumen”?
+
+scala> df.select(corr("High", "Volume")).show()
++--------------------+
+|  corr(High, Volume)|
++--------------------+
+|-0.20960233287942157|
++--------------------+
+
+# d) ¿Cuál es el máximo de la columna “High” por año?
+
+scala> val dfByYear = df.withColumn("Year", year($"Date"))
+val dfByYear: org.apache.spark.sql.DataFrame = [Date: date, Open: double ... 6 more fields]
+
+scala> dfByYear.groupBy("Year").agg(max($"High").alias("MaxHigh")).show()
++----+------------------+
+|Year|           MaxHigh|
++----+------------------+
+|2015|        716.159996|
+|2013|        389.159988|
+|2014|        489.290024|
+|2012|        133.429996|
+|2016|129.28999299999998|
+|2011|120.28000300000001|
++----+------------------+
+
+# e) ¿Cuál es el promedio de la columna “Close” para cada mes del calendario?
+
+scala> val dfByMonth = df.withColumn("Month", month($"Date"))
+val dfByMonth: org.apache.spark.sql.DataFrame = [Date: date, Open: double ... 6 more fields]
+
+scala> dfByMonth.groupBy("Month").agg(avg($"Close").alias("avgClose")).orderBy("Month").show()
++-----+------------------+
+|Month|          avgClose|
++-----+------------------+
+|    1|212.22613874257422|
+|    2| 254.1954634020619|
+|    3| 249.5825228971963|
+|    4|246.97514271428562|
+|    5|264.37037614150944|
+|    6| 295.1597153490566|
+|    7|243.64747528037387|
+|    8|195.25599892727263|
+|    9|206.09598121568627|
+|   10|205.93297300900903|
+|   11| 194.3172275445545|
+|   12| 199.3700942358491|
++-----+------------------+

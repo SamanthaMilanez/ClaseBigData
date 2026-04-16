@@ -17,3 +17,17 @@ df.orderBy($"Open".desc).select("Date", "Open").show(1)
 //Permite comparar rendimiento entre días.//
 df.select(max("Volume"),min("Volume")).show()
 df.filter($"Close" < 600).count()
+
+
+val highMayor: Double = df.filter($"High" > 500).count()
+val porcenT: Double = (highMayor / regs) * 100
+
+df.select(corr("High", "Volume")).show()
+
+val dfByYear = df.withColumn("Year", year($"Date"))
+dfByYear.groupBy("Year").agg(max($"High").alias("MaxHigh")).show()
+
+val dfByMonth = df.withColumn("Month", month($"Date"))
+dfByMonth.groupBy("Month").agg(avg($"Close").alias("avgClose")).orderBy("Month").show()
+
+
