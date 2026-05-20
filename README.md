@@ -605,6 +605,39 @@ metrics.accuracy
 ```scala
 val res8: Double = 0.9825783972125436
 ```
+Análisis
+
+En esta práctica se utilizó el algoritmo de Regresión Logística de Apache Spark MLlib para predecir si un usuario dará clic en un anuncio publicitario.
+
+Primero se cargó el archivo `advertising.csv` y se revisó la estructura de los datos utilizando `printSchema()`. Después se prepararon las variables necesarias para Machine Learning, renombrando la columna `Clicked on Ad` como `label`.
+
+Se creó una nueva columna llamada `Hour` obtenida del campo `Timestamp`, para incluir la hora en la que ocurrió el clic del anuncio.
+
+Posteriormente se utilizó `VectorAssembler` para combinar las variables numéricas en una sola columna llamada `features`, necesaria para entrenar el modelo de Regresión Logística.
+
+Los datos fueron divididos en entrenamiento y prueba utilizando una proporción de 70/30.
+
+Después se creó un `Pipeline` con las etapas de ensamblado de datos y entrenamiento del modelo.
+
+Finalmente se evaluó el modelo utilizando una matriz de confusión y la métrica `accuracy`.
+
+La matriz de confusión obtenida fue:
+
+```scala
+136.0  1.0
+4.0    146.0
+```
+
+Esto indica que el modelo clasificó correctamente la mayoría de los registros, teniendo muy pocos errores de predicción.
+
+La exactitud (`accuracy`) del modelo fue:
+
+```scala
+0.9825783972125436
+```
+
+El resultado muestra que el modelo tiene una precisión aproximada del 98.25%, por lo que el desempeño del algoritmo fue bastante bueno para predecir si un usuario hará clic en un anuncio.
+
 
 # Práctica 5
 Random Forest Classifier. LVGG
