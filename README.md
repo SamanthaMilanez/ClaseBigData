@@ -677,6 +677,162 @@ Test set accuracy = 0.9607843137254902
 ```
 Este código implementa un modelo de clasificación usando una red neuronal, se usa para aprender a clasificar datos en varias categorías. Primero se cargan los datos en formato LIBSVM y se dividen en entrenamiento y prueba utilizando una seed, que es un valor que hace que siempre obtengas los mismos resultados al ejecutar el código. Luego se definen las capas de la red neuronal, donde cada número representa la cantidad de neuronas en cada capa: la capa de entrada (4) corresponde a las variables de entrada, las capas intermedias (5 y 4) son las capas ocultas que procesan la información y aprenden patrones, y la capa de salida (3) representa las clases posibles a predecir. Después se configura el modelo indicando parámetros como el número máximo de iteraciones y la semilla, se entrena con los datos de entrenamiento y finalmente se evalúa su desempeño con los datos de prueba, calculando la precisión que indica qué tan bien el modelo clasifica correctamente los datos. En este caso la precisión fue de el 96.07%
 
+# Práctica 4
+Ejercicio Decision Tree
+```scala
+import org.apache.spark.sql.SparkSession
+
+```
+Crear una sesion Spark
+```scala
+val spark = SparkSession.builder()
+  .appName("DecisionTreeCreditExample")
+  .getOrCreate()
+```
+
+Se crea el dataset con las variables. Este es para determinar si se puede dar un credito o no.
+```scala
+val data = Seq(
+  (1.0,0.0,1.0,1.0),
+  (1.0,0.0,1.0,1.0),
+  (1.0,1.0,1.0,1.0),
+  (1.0,0.0,0.0,0.0),
+  (1.0,1.0,0.0,0.0),
+  (0.0,1.0,0.0,0.0),
+  (0.0,1.0,0.0,0.0),
+  (0.0,0.0,1.0,1.0),
+  (0.0,1.0,1.0,0.0),
+  (0.0,0.0,0.0,0.0)
+).toDF("income_high","has_debt","good_history","label")
+
+data.show()
+```
+```scala
+
++-----------+--------+------------+-----+
+|income_high|has_debt|good_history|label|
++-----------+--------+------------+-----+
+|        1.0|     0.0|         1.0|  1.0|
+|        1.0|     0.0|         1.0|  1.0|
+|        1.0|     1.0|         1.0|  1.0|
+|        1.0|     0.0|         0.0|  0.0|
+|        1.0|     1.0|         0.0|  0.0|
+|        0.0|     1.0|         0.0|  0.0|
+|        0.0|     1.0|         0.0|  0.0|
+|        0.0|     0.0|         1.0|  1.0|
+|        0.0|     1.0|         1.0|  0.0|
+|        0.0|     0.0|         0.0|  0.0|
++-----------+--------+------------+-----+
+```
+Spark necesita un vector de features:
+
+```scala
+import org.apache.spark.ml.feature.VectorAssembler
+
+val assembler = new VectorAssembler()
+.setInputCols(Array("income_high","has_debt","good_history"))
+.setOutputCol("features")
+
+val dataset = assembler.transform(data)
+dataset.select("features","label").show()
+```
+```scala
++-------------+-----+
+|     features|label|
++-------------+-----+
+|[1.0,0.0,1.0]|  1.0|
+|[1.0,0.0,1.0]|  1.0|
+|[1.0,1.0,1.0]|  1.0|
+|[1.0,0.0,0.0]|  0.0|
+|[1.0,1.0,0.0]|  0.0|
+|[0.0,1.0,0.0]|  0.0|
+|[0.0,1.0,0.0]|  0.0|
+|[0.0,0.0,1.0]|  1.0|
+|[0.0,1.0,1.0]|  0.0|
+|    (3,[],[])|  0.0|
++-------------+-----+
+```
+
+Dividimos datos en:
+70% entrenamiento → aprender patrones 
+30% prueba → evaluar modelo
+```scala
+val Array(trainingData, testData) = 
+dataset.randomSplit(Array(0.7, 0.3), seed = 42)
+
+```
+Configuramos el algoritmo
+• Parámetros clave:
+labelCol → qué queremos predecir 
+featuresCol → variables de entrada 
+maxDepth → complejidad del árbol 
+maxDepth = 3 significa: máximo 3 niveles de preguntas.
+```scala
+import org.apache.spark.ml.classification.DecisionTreeClassifier
+val dt = new DecisionTreeClassifier()
+.setLabelCol("label")
+.setFeaturesCol("features")
+.setMaxDepth(3)
+```
+Entrenamiento del modelo
+```scala
+val model = dt.fit(trainingData)
+```
+Spark nos muestra las reglas que descubrió analizando los datos.
+Ejemplo:
+If (feature 2 <= 0.5)
+Predict: 0.0 (rechazar crédito)
+Else
+Predict: 1.0 (aprobar crédito)
+
+```scala
+println(model.toDebugString)
+```
+
+```scala
+DecisionTreeClassificationModel: uid=dtc_8acdd6fa1533, depth=2, numNodes=5, numClasses=2, numFeatures=3
+  If (feature 1 <= 0.5)
+   If (feature 2 <= 0.5)
+    Predict: 0.0
+   Else (feature 2 > 0.5)
+    Predict: 1.0
+  Else (feature 1 > 0.5)
+   Predict: 0.0
+```
+Aplicamos el árbol a clientes nuevos para predecir si pagarían el crédito
+
+```scala
+val predictions = model.transform(testData)
+predictions.select("features","label","prediction","probability")
+.show(false)
+
+```
+
+```scala
++-------------+-----+----------+-----------+
+|features     |label|prediction|probability|
++-------------+-----+----------+-----------+
+|[1.0,0.0,1.0]|1.0  |1.0       |[0.0,1.0]  |
+|[1.0,1.0,1.0]|1.0  |0.0       |[1.0,0.0]  |
+|[1.0,0.0,0.0]|0.0  |0.0       |[1.0,0.0]  |
++-------------+-----+----------+-----------+
+```
+
+Medimos qué tan bien generaliza el modelo con datos reales
+```scala
+import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
+val evaluator = new MulticlassClassificationEvaluator()
+.setLabelCol("label")
+.setPredictionCol("prediction")
+.setMetricName("accuracy")
+val accuracy = evaluator.evaluate(predictions)
+println("Accuracy = " + accuracy)
+```
+```scala
+Accuracy = 0.6666666666666666
+```
+Un modelo de árbol de decisión se usa para predecir un resultado por ejemplo en este caso, si un credito es aprobado o no a partir de ciertas datos como ingresos, deudas e historial. Primero crea un conjunto de datos sencillo y los organiza en un formato, luego junta esas variables en una sola columna llamada features. Después divide los datos en entrenamiento y prueba usando una seed para que la división sea siempre la misma. El modelo de árbol de decisión aprende las reglas tipo “si pasa A, entonces es B" como un diagrama de decisiones que se suele usar en programacion para crear condiciones o eventos. 
+
 
 # Práctica 5
 Random Forest Classifier. LVGG
