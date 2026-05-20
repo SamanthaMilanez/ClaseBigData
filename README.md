@@ -1,9 +1,7 @@
-
-
 # BigData
 Unidad 2
 # Práctica 5
-Random Forest Classifier
+Random Forest Classifier. LVGG
 
 ```scala
 //Importar las librerías de Random Forest en Spark MLlib
@@ -239,4 +237,89 @@ Learned classification forest model:
        Predict: 1.0
     Else (feature 469 > 4.0)
      Predict: 1.0
+```
+
+
+# Práctica 6
+Naive Bayes. LVGG
+
+```scala
+//Importa librería para utilizar el algoritmo de clasificación Naive Bayes
+import org.apache.spark.ml.classification.NaiveBayes
+import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
+
+//Carga los datos desde un archivo de texto en formato LIBSVM y lo convierte en un DataFrame, estructurándolo automáticamente con dos columnas: label (etiqueta) y features (vector de características).
+val data = spark.read.format("libsvm").load("C:/spark/data/mllib/sample_libsvm_data.txt")
+```
+```sh
+val data: org.apache.spark.sql.DataFrame = [label: double, features: vector]
+```
+```scala
+//División aleatorea del conjunto de datos, en datos de entrenamiento y prueba.
+val Array(trainingData, testData) = data.randomSplit(Array(0.7, 0.3), seed = 1234L)
+```
+```sh
+val trainingData: org.apache.spark.sql.Dataset[org.apache.spark.sql.Row] = [label: double, features: vector]
+val testData: org.apache.spark.sql.Dataset[org.apache.spark.sql.Row] = [label: double, features: vector]
+```
+```scala
+//Crea y entrena un modelo de clasificación Naive Bayes usando los datos de entrenamiento.
+val model = new NaiveBayes().fit(trainingData)
+```
+```sh
+val model: org.apache.spark.ml.classification.NaiveBayesModel = NaiveBayesModel: uid=nb_5114205e4ff5, modelType=multinomial, numClasses=2, numFeatures=692
+```
+
+```scala
+//Aplica el modelo entrenado a los datos de prueba para generar predicciones.
+val predictions = model.transform(testData)
+//Imprime las filas y columnas con los resultados de las predicciones generadas por el modelo
+predictions.show()
+```
+```sh
+val predictions: org.apache.spark.sql.DataFrame = [label: double, features: vector ... 3 more fields]
+
++-----+--------------------+--------------------+-----------+----------+
+|label|            features|       rawPrediction|probability|prediction|
++-----+--------------------+--------------------+-----------+----------+
+|  0.0|(692,[95,96,97,12...|[-173266.38465085...|  [1.0,0.0]|       0.0|
+|  0.0|(692,[98,99,100,1...|[-176798.24796349...|  [1.0,0.0]|       0.0|
+|  0.0|(692,[122,123,124...|[-189371.23080028...|  [1.0,0.0]|       0.0|
+|  0.0|(692,[126,127,128...|[-210969.37526481...|  [1.0,0.0]|       0.0|
+|  0.0|(692,[127,128,129...|[-170881.90406252...|  [1.0,0.0]|       0.0|
+|  0.0|(692,[127,128,129...|[-213398.60801697...|  [1.0,0.0]|       0.0|
+|  0.0|(692,[127,128,129...|[-183284.52661405...|  [1.0,0.0]|       0.0|
+|  0.0|(692,[128,129,130...|[-246027.39704974...|  [1.0,0.0]|       0.0|
+|  0.0|(692,[150,151,152...|[-157898.87276406...|  [1.0,0.0]|       0.0|
+|  0.0|(692,[152,153,154...|[-208299.36235153...|  [1.0,0.0]|       0.0|
+|  0.0|(692,[152,153,154...|[-243127.71890150...|  [1.0,0.0]|       0.0|
+|  0.0|(692,[153,154,155...|[-144207.79475583...|  [1.0,0.0]|       0.0|
+|  1.0|(692,[100,101,102...|[-144208.40561310...|  [0.0,1.0]|       1.0|
+|  1.0|(692,[123,124,125...|[-138363.44872824...|  [0.0,1.0]|       1.0|
+|  1.0|(692,[124,125,126...|[-127978.05376288...|  [0.0,1.0]|       1.0|
+|  1.0|(692,[124,125,126...|[-79957.487724508...|  [0.0,1.0]|       1.0|
+|  1.0|(692,[125,126,127...|[-102430.14231250...|  [0.0,1.0]|       1.0|
+|  1.0|(692,[125,126,127...|[-81588.939249410...|  [0.0,1.0]|       1.0|
+|  1.0|(692,[126,127,128...|[-118122.23190317...|  [0.0,1.0]|       1.0|
+|  1.0|(692,[126,127,128...|[-80661.473798128...|  [0.0,1.0]|       1.0|
++-----+--------------------+--------------------+-----------+----------+
+only showing top 20 rows
+```
+
+```scala
+//Crea y configura un evaluador para medir la precisión del modelo
+val evaluator = new MulticlassClassificationEvaluator().setLabelCol("label").setPredictionCol("prediction").setMetricName("accuracy")
+```
+```sh
+val evaluator: org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator = MulticlassClassificationEvaluator: uid=mcEval_cef6bd9cd2fc, metricName=accuracy, metricLabel=0.0, beta=1.0, eps=1.0E-15
+```
+
+```scala
+//Evalúa las predicciones del modelo y calcula la métrica de precisión
+val accuracy = evaluator.evaluate(predictions)
+println(s"Test set accuracy = $accuracy")
+```
+```sh
+val accuracy: Double = 1.0
+Test set accuracy = 1.0
 ```
