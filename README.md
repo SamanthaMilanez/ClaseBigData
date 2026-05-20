@@ -260,6 +260,44 @@ println(s"R2: ${trainingSummary.r2}")
 ```scala
 R2: 0.9843155370226727
 ```
+# Práctica 3
+Ejercicio Multilayer Classifier Perceptron
+```scala
+
+import org.apache.spark.ml.classification.MultilayerPerceptronClassifier
+import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
+```
+
+Importar los datos guardados en el formato LIBSVM format como un DataFrame.
+```scala
+val data = spark.read.format("libsvm").load("C:/Spark/data/mllib/sample_multiclass_classification_data.txt")
+val Array(training, test) = data.randomSplit(Array(0.6, 0.4), seed = 12345)
+```
+
+Se especifican las capas de la red neuronal:
+Capa de entrada de tamano 4, dos intermediarias de tamano 5 y 4 de salida de tamano 3. 
+```scala
+val layers = Array[Int](4, 5, 4, 3)
+```
+
+Se crea el entrenador y sus parametos 
+```scala
+val trainer = new MultilayerPerceptronClassifier().setLayers(layers).setBlockSize(128).setSeed(1234L).setMaxIter(100)
+```
+
+Se entrena el modelo
+```scala
+val model = trainer.fit(training)
+```
+Se muestra la precision del set de prueba
+```scala
+val result = model.transform(test)
+val predictionAndLabels = result.select("prediction", "label")
+val evaluator = new MulticlassClassificationEvaluator().setMetricName("accuracy")
+println(s"Test set accuracy = ${evaluator.evaluate(predictionAndLabels)}")
+```scala
+Test set accuracy = 0.9607843137254902
+```
 
 # Práctica 5
 Random Forest Classifier. LVGG
