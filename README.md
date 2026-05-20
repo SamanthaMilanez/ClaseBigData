@@ -261,6 +261,351 @@ println(s"R2: ${trainingSummary.r2}")
 R2: 0.9843155370226727
 ```
 
+# Práctica 2
+
+# LOGISTIC REGRESSION EXERCISE
+
+Importar librerías
+
+```scala
+import org.apache.spark.ml.classification.LogisticRegression
+import org.apache.spark.sql.SparkSession
+import org.apache.log4j._
+```
+
+Configurar errores
+
+```scala
+Logger.getLogger("org").setLevel(Level.ERROR)
+```
+
+Crear sesión Spark
+
+```scala
+val spark = SparkSession.builder().getOrCreate()
+```
+
+```scala
+val spark: org.apache.spark.sql.SparkSession =
+org.apache.spark.sql.classic.SparkSession@6cb62e90
+```
+
+Leer archivo advertising.csv
+
+```scala
+val data = spark.read
+  .option("header","true")
+  .option("inferSchema", "true")
+  .format("csv")
+  .load("advertising.csv")
+```
+
+```scala
+val data: org.apache.spark.sql.DataFrame =
+[Daily Time Spent on Site: double, Age: int ... 8 more fields]
+```
+
+Imprimir schema del DataFrame
+
+```scala
+data.printSchema()
+```
+
+```scala
+root
+ |-- Daily Time Spent on Site: double (nullable = true)
+ |-- Age: integer (nullable = true)
+ |-- Area Income: double (nullable = true)
+ |-- Daily Internet Usage: double (nullable = true)
+ |-- Ad Topic Line: string (nullable = true)
+ |-- City: string (nullable = true)
+ |-- Male: integer (nullable = true)
+ |-- Country: string (nullable = true)
+ |-- Timestamp: timestamp (nullable = true)
+ |-- Clicked on Ad: integer (nullable = true)
+```
+
+Despliegue de datos
+
+Imprimir un renglón de ejemplo
+
+```scala
+data.head(1)
+```
+
+```scala
+val res2: Array[org.apache.spark.sql.Row] =
+Array([68.95,35,61833.9,256.09,Cloned 5thgeneration orchestration,
+Wrightburgh,0,Tunisia,2016-03-27 00:53:11.0,0])
+```
+
+Obtener nombres de columnas y primera fila
+
+```scala
+val colnames = data.columns
+val firstrow = data.head(1)(0)
+```
+
+```scala
+val colnames: Array[String] =
+Array(
+Daily Time Spent on Site,
+Age,
+Area Income,
+Daily Internet Usage,
+Ad Topic Line,
+City,
+Male,
+Country,
+Timestamp,
+Clicked on Ad
+)
+
+val firstrow: org.apache.spark.sql.Row =
+[68.95,35,61833.9,256.09,
+Cloned 5thgeneration orchestration,
+Wrightburgh,0,Tunisia,
+2016-03-27 00:53:11.0,0]
+```
+
+Mostrar datos de ejemplo
+
+```scala
+println("\n")
+println("Example data row")
+
+for(ind <- Range(1, colnames.length)){
+    println(colnames(ind))
+    println(firstrow(ind))
+    println("\n")
+}
+```
+
+```scala
+Example data row
+
+Age
+35
+
+Area Income
+61833.9
+
+Daily Internet Usage
+256.09
+
+Ad Topic Line
+Cloned 5thgeneration orchestration
+
+City
+Wrightburgh
+
+Male
+0
+
+Country
+Tunisia
+
+Timestamp
+2016-03-27 00:53:11.0
+
+Clicked on Ad
+0
+```
+
+Preparar DataFrame para Machine Learning
+
+Crear columna Hour
+
+```scala
+val timedata = data.withColumn("Hour",hour(data("Timestamp")))
+```
+
+```scala
+val timedata: org.apache.spark.sql.DataFrame =
+[Daily Time Spent on Site: double, Age: int ... 9 more fields]
+```
+
+Seleccionar columnas y renombrar label
+
+```scala
+val logregdata = timedata.select(
+  data("Clicked on Ad").as("label"),
+  $"Daily Time Spent on Site",
+  $"Age",
+  $"Area Income",
+  $"Daily Internet Usage",
+  $"Hour",
+  $"Male"
+)
+```
+
+```scala
+val logregdata: org.apache.spark.sql.DataFrame =
+[label: int, Daily Time Spent on Site: double ... 5 more fields]
+```
+
+VectorAssembler
+
+Importar librerías
+
+```scala
+import org.apache.spark.ml.feature.VectorAssembler
+import org.apache.spark.ml.linalg.Vectors
+```
+
+Crear assembler
+
+```scala
+val assembler = (new VectorAssembler()
+  .setInputCols(Array(
+    "Daily Time Spent on Site",
+    "Age",
+    "Area Income",
+    "Daily Internet Usage",
+    "Hour",
+    "Male"
+  ))
+  .setOutputCol("features"))
+```
+
+```scala
+val assembler: org.apache.spark.ml.feature.VectorAssembler =
+VectorAssembler: uid=vecAssembler_88bcdb3a2a89,
+handleInvalid=error,
+numInputCols=6
+```
+
+División de datos
+
+Crear conjuntos training y test
+
+```scala
+val Array(training, test) =
+logregdata.randomSplit(Array(0.7, 0.3), seed = 12345)
+```
+
+```scala
+val training: org.apache.spark.sql.Dataset[org.apache.spark.sql.Row] =
+[label: int, Daily Time Spent on Site: double ... 5 more fields]
+
+val test: org.apache.spark.sql.Dataset[org.apache.spark.sql.Row] =
+[label: int, Daily Time Spent on Site: double ... 5 more fields]
+```
+
+Pipeline y modelo
+
+Importar Pipeline
+
+```scala
+import org.apache.spark.ml.Pipeline
+```
+
+Crear LogisticRegression
+
+```scala
+val lr = new LogisticRegression()
+```
+
+```scala
+val lr: org.apache.spark.ml.classification.LogisticRegression =
+logreg_b094f13e8ba4
+```
+
+Crear pipeline
+
+```scala
+val pipeline = new Pipeline().setStages(Array(assembler, lr))
+```
+
+```scala
+val pipeline: org.apache.spark.ml.Pipeline =
+pipeline_54edadaddb6e
+```
+
+Ajustar modelo
+
+```scala
+val model = pipeline.fit(training)
+```
+
+```scala
+26/05/20 11:24:15 WARN InstanceBuilder:
+Failed to load implementation from:dev.ludovic.netlib.blas.JNIBLAS
+
+val model: org.apache.spark.ml.PipelineModel =
+pipeline_54edadaddb6e
+```
+
+Transformar datos de prueba
+
+```scala
+val results = model.transform(test)
+```
+
+```scala
+val results: org.apache.spark.sql.DataFrame =
+[label: int, Daily Time Spent on Site: double ... 9 more fields]
+```
+
+Evaluación del modelo
+
+Importar MulticlassMetrics
+
+```scala
+import org.apache.spark.mllib.evaluation.MulticlassMetrics
+```
+
+Crear predictionAndLabels
+
+```scala
+val predictionAndLabels =
+results.select($"prediction",$"label")
+  .as[(Double, Double)]
+  .rdd
+```
+
+```scala
+val predictionAndLabels:
+org.apache.spark.rdd.RDD[(Double, Double)] =
+MapPartitionsRDD[69] at rdd at practicalogisticregression.scala:1
+```
+
+Crear métricas
+
+```scala
+val metrics = new MulticlassMetrics(predictionAndLabels)
+```
+
+```scala
+val metrics:
+org.apache.spark.mllib.evaluation.MulticlassMetrics =
+org.apache.spark.mllib.evaluation.MulticlassMetrics@2badf071
+```
+
+Mostrar matriz de confusión
+
+```scala
+println("Confusion matrix:")
+println(metrics.confusionMatrix)
+```
+
+```scala
+Confusion matrix:
+
+136.0  1.0
+4.0    146.0
+```
+
+Mostrar accuracy
+
+```scala
+metrics.accuracy
+```
+
+```scala
+val res8: Double = 0.9825783972125436
+```
+
 # Práctica 5
 Random Forest Classifier. LVGG
 
