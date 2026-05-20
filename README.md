@@ -263,7 +263,7 @@ R2: 0.9843155370226727
 
 # Práctica 2
 
-# LOGISTIC REGRESSION EXERCISE
+Ejercicio de regresion logistica 
 
 Importar librerías
 
