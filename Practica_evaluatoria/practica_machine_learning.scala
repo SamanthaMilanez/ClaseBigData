@@ -34,27 +34,39 @@ df.describe().show()
 
 //6-dividir los datos en conjuntos de entrenamiento y prueba, y posteriormente entrenar el modelo
 val Array(training, test) = output.randomSplit(Array(0.8, 0.2), seed = 1234L)
-//6-
+//6.1-Convertir la columna categórica en índice numérico
 val indexer = new StringIndexer().setInputCol("label").setOutputCol("labelIndex").fit(training)
 
 //6-Aplicar la transformación a tus datos de entrenamiento
 val trainingIndexed = indexer.transform(training)
+//Con el siguiente código se puede ver cómo queda la etiqueta con su índice
+indexer.labels.zipWithIndex.foreach { case (label, index) => println(label + " -> " + index) }
 
-//6-Indexar el conjunto de prueba con el MISMO indexador
+//6-Se genera nuevo DataFrame (testIndexed) que contiene la columna indexada necesaria para que el modelo procese las etiquetas.
 val testIndexed = indexer.transform(test)
-//<<<SEGUNDO COMMIT
+//6-Impresión del dataframe
+testIndexed.show()
+
 
 // 7-specify layers for the neural network:
 // input layer of size 4 (features), two intermediate of size 5 and 4
 // and output of size 3 (classes). 
+//Definir la arquitectura de la red neuronal del algoritmo MultilayerPerceptronClassifier
 val layers = Array[Int](4, 5, 4, 3)
 
 //7-create the trainer and set its parameters
 //val trainer = new MultilayerPerceptronClassifier().setLayers(layers).setBlockSize(128).setSeed(1234L).setMaxIter(100)
+//crea una red neuronal multicapa, define su arquitectura, especifica las etiquetas a clasificar 
+//y establece las variables de entrada que utilizará el modelo de Machine Learning.
 val trainer = new MultilayerPerceptronClassifier().setLayers(layers).setLabelCol("labelIndex") .setFeaturesCol("features")
 
-//7-Entrenar (usando el conjunto indexado)
+//7-Almacena el modelo configurado, listo para entrenarse
+//Se obtiene el modelo de entrenamiento, el que conoce los patrones de los datos. El método fit, ordena al algoritmo a 
+//realizar cálculos matemáticos para ajustar los pesos de la red neuronal.
+//trainingIndexed, Es el conjunto de datos con el que la red neuronal estudiará para aprender a clasificar.
 val model = trainer.fit(trainingIndexed)
+
+//<<<SEGUNDO COMMIT
 
 //8-Transformar el conjunto de prueba indexado
 val result = model.transform(testIndexed)

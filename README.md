@@ -137,3 +137,88 @@ only showing top 5 rows
 +-------+---------+------------------+-------------------+------------------+------------------+
 
 ```
+```scala
+//6-dividir los datos en conjuntos de entrenamiento(training) y prueba(test), y posteriormente entrenar el modelo
+val Array(training, test) = output.randomSplit(Array(0.8, 0.2), seed = 1234L)
+```
+```sh
+val training: org.apache.spark.sql.Dataset[org.apache.spark.sql.Row] = [label: string, features: vector]
+val test: org.apache.spark.sql.Dataset[org.apache.spark.sql.Row] = [label: string, features: vector]
+```
+```scala
+//6.1-Convertir la columna categórica en índice numérico
+val indexer = new StringIndexer().setInputCol("label").setOutputCol("labelIndex").fit(training)
+//Con el siguiente código se puede ver cómo queda la etiqueta con su índice
+indexer.labels.zipWithIndex.foreach { case (label, index) => println(label + " -> " + index) }
+```
+```sh
+val indexer: org.apache.spark.ml.feature.StringIndexerModel = StringIndexerModel: uid=strIdx_1cf478d53161, handleInvalid=error
+
+setosa -> 0
+virginica -> 1
+versicolor -> 2
+```
+```scala
+//Se genera nuevo DataFrame (testIndexed) que contiene la columna indexada necesaria para que el modelo procese las etiquetas.
+val testIndexed = indexer.transform(test)
+testIndexed.show()
+```
+```sh
+val testIndexed: org.apache.spark.sql.DataFrame = [label: string, features: vector ... 1 more field]
+
++----------+-----------------+----------+
+|     label|         features|labelIndex|
++----------+-----------------+----------+
+|    setosa|[4.4,2.9,1.4,0.2]|       0.0|
+|    setosa|[4.5,2.3,1.3,0.3]|       0.0|
+|    setosa|[5.0,3.2,1.2,0.2]|       0.0|
+|    setosa|[5.0,3.4,1.6,0.4]|       0.0|
+|    setosa|[5.0,3.5,1.3,0.3]|       0.0|
+|    setosa|[5.0,3.5,1.6,0.6]|       0.0|
+|    setosa|[5.0,3.6,1.4,0.2]|       0.0|
+|    setosa|[5.2,3.4,1.4,0.2]|       0.0|
+|    setosa|[5.5,3.5,1.3,0.2]|       0.0|
+|    setosa|[5.7,3.8,1.7,0.3]|       0.0|
+|versicolor|[5.0,2.3,3.3,1.0]|       2.0|
+|versicolor|[5.5,2.3,4.0,1.3]|       2.0|
+|versicolor|[5.5,2.4,3.7,1.0]|       2.0|
+|versicolor|[5.5,2.4,3.8,1.1]|       2.0|
+|versicolor|[5.6,2.9,3.6,1.3]|       2.0|
+|versicolor|[5.7,2.6,3.5,1.0]|       2.0|
+|versicolor|[5.8,2.6,4.0,1.2]|       2.0|
+|versicolor|[5.8,2.7,3.9,1.2]|       2.0|
+|versicolor|[6.0,2.2,4.0,1.0]|       2.0|
+|versicolor|[6.2,2.2,4.5,1.5]|       2.0|
++----------+-----------------+----------+
+only showing top 20 rows
+```
+```scala
+// 7-specify layers for the neural network:
+// input layer of size 4 (features), two intermediate of size 5 and 4
+// and output of size 3 (classes). 
+//Definir la arquitectura de la red neuronal del algoritmo MultilayerPerceptronClassifier
+val layers = Array[Int](4, 5, 4, 3)
+```
+```sh
+val layers: Array[Int] = Array(4, 5, 4, 3)
+```
+```scala
+//7-create the trainer and set its parameters
+//val trainer = new MultilayerPerceptronClassifier().setLayers(layers).setBlockSize(128).setSeed(1234L).setMaxIter(100)
+//crea una red neuronal multicapa, define su arquitectura, especifica las etiquetas a clasificar
+//y establece las variables de entrada que utilizará el modelo de Machine Learning.
+val trainer = new MultilayerPerceptronClassifier().setLayers(layers).setLabelCol("labelIndex") .setFeaturesCol("features")
+```
+```sh
+val trainer: org.apache.spark.ml.classification.MultilayerPerceptronClassifier = mlpc_25eff187c763
+```
+```scala
+//7-Almacena el modelo configurado, listo para entrenarse
+//Se obtiene el modelo de entrenamiento, el que conoce los patrones de los datos. El método fit, ordena al algoritmo a 
+//realizar cálculos matemáticos para ajustar los pesos de la red neuronal.
+//trainingIndexed, Es el conjunto de datos con el que la red neuronal estudiará para aprender a clasificar.
+val model = trainer.fit(trainingIndexed)
+```
+```sh
+val model: org.apache.spark.ml.classification.MultilayerPerceptronClassificationModel = MultilayerPerceptronClassificationModel: uid=mlpc_25eff187c763, numLayers=4, numClasses=3, numFeatures=4
+```
