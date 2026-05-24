@@ -288,7 +288,6 @@ result.select("label", "labelIndex", "prediction", "features").show()
 only showing top 7 rows
 ```
 
-### Observaciones
 
 - El modelo Multilayer Perceptron logró clasificar correctamente la mayoría de las flores del conjunto de prueba.
 - La precisión obtenida fue de aproximadamente 97%, lo que indica un excelente desempeño del algoritmo.
