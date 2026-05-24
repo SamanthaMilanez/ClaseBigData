@@ -222,3 +222,78 @@ val model = trainer.fit(trainingIndexed)
 ```sh
 val model: org.apache.spark.ml.classification.MultilayerPerceptronClassificationModel = MultilayerPerceptronClassificationModel: uid=mlpc_25eff187c763, numLayers=4, numClasses=3, numFeatures=4
 ```
+```scala
+//8-Transformar el conjunto de prueba indexado utilizando el modelo entrenado.
+//El modelo realiza predicciones sobre datos que no ha visto anteriormente.
+val result = model.transform(testIndexed)
+```
+```sh
+val result: org.apache.spark.sql.DataFrame = [label: string, features: vector ... 4 more fields]
+```
+
+```scala
+//Se seleccionan únicamente las columnas prediction y label
+//para comparar las predicciones realizadas por el modelo.
+val predictionAndLabels = result.select("prediction", "label")
+```
+```sh
+val predictionAndLabels: org.apache.spark.sql.DataFrame = [prediction: double, label: string]
+```
+
+```scala
+//8.1-Configurar el evaluador para utilizar la columna numérica labelIndex
+//y medir la precisión (accuracy) del modelo de clasificación.
+val evaluator = new MulticlassClassificationEvaluator()
+  .setLabelCol("labelIndex")
+  .setPredictionCol("prediction")
+  .setMetricName("accuracy")
+```
+```sh
+val evaluator: org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator = MulticlassClassificationEvaluator: uid=mcEval_e93e88a3ffe5, metricName=accuracy, metricLabel=0.0, beta=1.0, eps=1.0E-15
+```
+
+```scala
+//8.2-Calcular la precisión del modelo utilizando los resultados obtenidos
+//del conjunto de prueba.
+val accuracy = evaluator.evaluate(result)
+```
+```sh
+val accuracy: Double = 0.972972972972973
+```
+
+```scala
+//Imprimir el porcentaje de precisión obtenido por el modelo.
+println(s"Test set accuracy = $accuracy")
+```
+```sh
+Test set accuracy = 0.972972972972973
+```
+
+```scala
+//Mostrar algunas predicciones realizadas por el modelo.
+result.select("label", "labelIndex", "prediction", "features").show()
+```
+```sh
++----------+----------+----------+-----------------+
+|     label|labelIndex|prediction|         features|
++----------+----------+----------+-----------------+
+|    setosa|       0.0|       0.0|[4.4,2.9,1.4,0.2]|
+|    setosa|       0.0|       0.0|[4.5,2.3,1.3,0.3]|
+|    setosa|       0.0|       0.0|[5.0,3.2,1.2,0.2]|
+|versicolor|       2.0|       2.0|[5.5,2.4,3.8,1.1]|
+|versicolor|       2.0|       2.0|[5.8,2.7,3.9,1.2]|
+| virginica|       1.0|       1.0|[6.3,3.3,6.0,2.5]|
+| virginica|       1.0|       1.0|[6.5,3.0,5.8,2.2]|
++----------+----------+----------+-----------------+
+only showing top 7 rows
+```
+
+### Observaciones
+
+- El modelo Multilayer Perceptron logró clasificar correctamente la mayoría de las flores del conjunto de prueba.
+- La precisión obtenida fue de aproximadamente 97%, lo que indica un excelente desempeño del algoritmo.
+- La arquitectura de la red neuronal utilizada fue:
+  - 4 neuronas de entrada
+  - 2 capas ocultas con 5 y 4 neuronas
+  - 3 neuronas de salida correspondientes a las clases de Iris.
+- Las predicciones obtenidas coinciden correctamente con las etiquetas reales en la mayoría de los registros.
